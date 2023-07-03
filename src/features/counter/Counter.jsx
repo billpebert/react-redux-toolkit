@@ -12,7 +12,7 @@ const Counter = () => {
         dispatch(reset())
     }
     return (
-        <section className='my-5'>
+        <section className='flex flex-col items-center justify-center my-5'>
             <div className="inline-flex items-center gap-4">
                 <button onClick={() => dispatch(increment())} className='px-4 py-2 text-base text-white bg-indigo-500 rounded-2xl'>
                     +
