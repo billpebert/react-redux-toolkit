@@ -5,11 +5,14 @@ import "./index.css"
 // State management
 import { store } from "./app/store.js"
 import { Provider } from "react-redux"
+import { fetchUsers } from "./features/users/userSlice.js"
+
+store.dispatch(fetchUsers())
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	<React.StrictMode>
+	// <React.StrictMode>
 		<Provider store={store}>
 			<App />
 		</Provider>
-	</React.StrictMode>
+	// </React.StrictMode>
 )

@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { createPost } from "./postSlice"
+import { createNewPost } from "./postSlice"
 import { getAllUsers } from "../users/userSlice"
 
 const AddPostForm = () => {
@@ -8,6 +8,7 @@ const AddPostForm = () => {
 	const [title, setTitle] = useState("")
 	const [content, setContent] = useState("")
 	const [userId, setUserId] = useState("")
+    const [addRequestStatus, setAddRequestStatus] = useState('idle')
 
     const users = useSelector(getAllUsers)
 
@@ -15,28 +16,25 @@ const AddPostForm = () => {
 	const onContentChange = (e) => setContent(e.target.value)
 	const onAuthorChange = (e) => setUserId(e.target.value)
 
-    const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
+    // const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
+    const canSave = [title, content, userId].every(Boolean) && addRequestStatus === 'idle'
 
     const onSavePost = (e) => {
         e.preventDefault()
-        if(title && content && userId) {
-            // instead of this
-            // dispatch(
-            //     createPost({
-            //         id: nanoid(),
-            //         title,
-            //         content
-            //     })
-            // )
+        if (canSave) {
+            try {
+                setAddRequestStatus('pending')
+                dispatch(createNewPost({title, body: content, userId})).unwrap()
 
-            // simplify like this
-            // config in src\features\posts\postSlice.js
-            dispatch(createPost(title, content, userId))
+                setTitle('')
+                setContent('')
+                setUserId('')
+            } catch (error) {
+                console.error('Failed to create new post!', error)
+            } finally {
+                setAddRequestStatus('idle')
+            }
         }
-
-        setTitle('')
-        setContent('')
-        setUserId('')
     }
 
     const usersList = users.map(user => (
