@@ -2,8 +2,10 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { createNewPost } from "./postSlice"
 import { getAllUsers } from "../users/userSlice"
+import { useNavigate } from "react-router-dom"
 
 const AddPostForm = () => {
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 	const [title, setTitle] = useState("")
 	const [content, setContent] = useState("")
@@ -29,6 +31,7 @@ const AddPostForm = () => {
                 setTitle('')
                 setContent('')
                 setUserId('')
+                navigate('/')
             } catch (error) {
                 console.error('Failed to create new post!', error)
             } finally {

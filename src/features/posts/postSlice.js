@@ -25,6 +25,28 @@ export const createNewPost = createAsyncThunk('posts/createNewPost', async (init
     }
 })
 
+export const updatePost = createAsyncThunk('posts/updatePost', async (initialPost) => {
+    const { id } = initialPost
+    try {
+        const response = await axios.put(`${POSTS_API}/${id}`, initialPost)
+        return response.data
+    } catch (error) {
+        // return error.message
+        return initialPost //only for testing redux
+    }
+})
+
+export const deletePost = createAsyncThunk('posts/deletePost', async (initialPost) => {
+    const { id } = initialPost
+    try {
+        const response = await axios.delete(`${POSTS_API}/${id}`, initialPost)
+        if (response?.status === 200) return initialPost
+        return `${response?.status}: ${response?.statusText}`
+    } catch (error) {
+        return error.message
+    }
+})
+
 const postsSlice = createSlice({
     name: 'posts',
     initialState,
@@ -73,7 +95,7 @@ const postsSlice = createSlice({
                 // Adding date and reactions
                 let min = 1
                 const loadedPosts = action.payload.map(post => {
-                    post.date = sub(new Date(), {minutes: min++}).toISOString()
+                    post.date = sub(new Date(), { minutes: min++ }).toISOString()
                     post.reactions = {
                         thumbsUp: 0,
                         wow: 0,
@@ -103,12 +125,35 @@ const postsSlice = createSlice({
                 console.log(action.payload)
                 state.posts.push(action.payload)
             })
+            .addCase(updatePost.fulfilled, (state, action) => {
+                if (!action.payload?.id) {
+                    console.log('Update could not complete')
+                    console.log(action.payload)
+                    return;
+                }
+                const { id } = action.payload
+                action.payload.date = new Date().toISOString()
+                const post = state.posts.filter(post => post.id !== id)
+                state.posts = [...post, action.payload]
+            })
+            .addCase(deletePost.fulfilled, (state, action) => {
+                if (!action.payload?.id) {
+                    console.log('Delete could not complete!')
+                    console.log(action.payload)
+                    return
+                }
+                const { id } = action.payload
+                const post = state.posts.filter(post => post.id !== id)
+                state.posts = post
+            })
     }
 })
 
-export const selectAllPosts = (state) => state.posts.posts
-export const getPostsStatus = (state) => state.posts.status
-export const getPostsError = (state) => state.posts.error
+export const selectAllPosts = (state) => state.posts.posts;
+export const getPostsStatus = (state) => state.posts.status;
+export const getPostsError = (state) => state.posts.error;
+export const selectPostById = (state, postId) => state.posts.posts.find(post => post.id === postId)
+
 export const { createPost, reactionAdded } = postsSlice.actions
 
 export default postsSlice.reducer
