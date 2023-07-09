@@ -51,6 +51,7 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
+        // look in video 36:15
         createPost: {
             // action function
             reducer(state, action) {
