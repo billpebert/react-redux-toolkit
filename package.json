@@ -7,12 +7,14 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "watch-json": "json-server --watch data/db.json --port 3500"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
+    "json-server": "^0.17.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.1",
