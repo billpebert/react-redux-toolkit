@@ -34,7 +34,8 @@ const EditPostForm = () => {
 	// const canSave = Boolean(title) && Boolean(content) && Boolean(userId)
 	const canSave = [title, content, userId].every(Boolean) && !isLoading
 
-	const onSavePostClicked = async () => {
+	const onSavePostClicked = async (e) => {
+		e.preventDefault()
 		if (canSave) {
 			try {
 				await updatePost({ id: post.id, title, body: content, userId }).unwrap()
@@ -66,8 +67,6 @@ const EditPostForm = () => {
 			console.error("Failed to delete the post", error)
 		}
 	}
-
-	// console.log(userId)
 
 	return (
 		<section className="py-10 w-full max-w-[500px] mx-auto">
@@ -118,7 +117,7 @@ const EditPostForm = () => {
 				</button>
 				<button
 					type="button"
-					className="px-6 py-3 font-medium rounded-lg bg-rose-700 text-slate-50 disabled:bg-blue-300"
+					className="px-6 py-3 font-medium rounded-lg bg-rose-700 text-slate-50 disabled:bg-rose-300"
 					disabled={!canSave}
 					onClick={onDeletePostClicked}
 				>

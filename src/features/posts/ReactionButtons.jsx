@@ -11,16 +11,6 @@ const reactionEmoji = {
 const ReactionButtons = ({ post }) => {
 	const [addReaction] = useAddReactionMutation()
 
-	const dispatchReaction = () => {
-		const newValue = post.reactions[name] + 1
-		addReaction({
-			postId: post.id,
-			reactions: {
-				...post.reactions,
-				[name]: newValue,
-			},
-		})
-	}
 	// [name, emoji] = [key, value]
 	const reactionButtons = Object.entries(reactionEmoji).map(([name, emoji]) => {
 		return (
@@ -28,10 +18,12 @@ const ReactionButtons = ({ post }) => {
 				key={name}
 				type="button"
 				className="text-sm text-slate-400"
-				onClick={() => {
-					const newValue = post.reactions[name] + 1
-					addReaction({ postId: post.id, reactions: { ...post.reactions, [name]: newValue } })
-				}}
+				onClick={
+					() => {
+						const newValue = post.reactions[name] + 1;
+						addReaction({ postId: post.id, reactions: { ...post.reactions, [name]: newValue } })
+					}
+				}
 			>
 				{emoji} {post.reactions[name]}
 			</button>

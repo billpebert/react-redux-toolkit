@@ -24,7 +24,7 @@ const transformResponseData = responseData => {
 
         if (!post?.reactions)
             post.reactions = reactionsList
-
+        
         return post
     })
     return postAdapter.setAll(initialState, loadedPosts)
@@ -61,7 +61,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     reactions: reactionsList
                 }
             }),
-            invalidateTags: [
+            invalidatesTags: [
                 { type: 'Post', id: "LIST" }
             ]
         }),
@@ -74,7 +74,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                     date: new Date().toISOString()
                 }
             }),
-            invalidateTags: (result, error, arg) => [
+            invalidatesTags: (result, error, arg) => [
                 { type: 'Post', id: arg.id }
             ]
         }),
@@ -84,7 +84,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'DELETE',
                 body: { id }
             }),
-            invalidateTags: (result, error, arg) => [
+            invalidatesTags: (result, error, arg) => [
                 { type: 'Post', id: arg.id }
             ]
         }),
@@ -97,6 +97,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 body: { reactions }
             }),
             async onQueryStarted({ postId, reactions }, { dispatch, queryFulfilled }) {
+                console.log(reactions)
                 // `updateQueryData` requires the endpoint name and cache key arguments
                 // so it knows which piece of cache state to update
                 // billy note:

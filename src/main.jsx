@@ -13,7 +13,7 @@ store.dispatch(extendedApiSlice.endpoints.getPosts.initiate())
 store.dispatch(fetchUsers())
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-	// <React.StrictMode>
+	<React.StrictMode>
 	<Provider store={store}>
 		<Router>
 			<Routes>
@@ -21,5 +21,5 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 			</Routes>
 		</Router>
 	</Provider>
-	// </React.StrictMode>
+	</React.StrictMode>
 )
