@@ -1,36 +1,23 @@
 import { useSelector } from "react-redux"
-import { selectPostIds, getPostsError, getPostsStatus } from "./postSlice"
+import { selectPostIds } from "./postSlice"
 import PostsExcerpt from "./PostsExcerpt"
 import { Link } from "react-router-dom"
+import { useGetPostsQuery } from "./postSlice"
 
 const PostsList = () => {
-	// const dispatch = useDispatch()
+
+	const {isLoading, isSuccess, isError, error} = useGetPostsQuery()
 	const orderedPostIds = useSelector(selectPostIds)
-	const postStatus = useSelector(getPostsStatus)
-	const postsError = useSelector(getPostsError)
-	// console.log(useSelector(state => state))
-
-	// NOTE: fetchPosts() has been loaded in main.jsx
-	// useEffect(() => {
-	// 	if (postStatus === "idle") {
-	// 		dispatch(fetchPosts())
-	// 	}
-	// }, [postStatus, dispatch])
-
-	// sort data in reverse order [latest]
-	// const orderedPosts = posts.slice().sort((a,b) => b.date.localeCompare(a.date))
-	// const renderedPosts = orderedPosts.map((post) => (
-
-	// ))
 	let content
-	if (postStatus === "loading") {
+
+	if (isLoading) {
 		content = <p className="text-xl font-medium animate-bounce">Loading...</p>
-	} else if (postStatus === "succeeded") {
+	} else if (isSuccess) {
 		// const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date))
 		// content = orderedPosts.map((post) => <PostsExcerpt key={post.id} post={post} />)
 
 		content = orderedPostIds.map(postId => <PostsExcerpt key={postId} postId={postId} />)
-	} else if (postStatus === "failed") {
+	} else if (isError) {
 		content = <p>error! {postsError}</p>
 	}
 
