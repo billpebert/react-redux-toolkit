@@ -56,7 +56,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: {
                     ...initialPost,
-                    useId: Number(initialPost.userId),
+                    userId: Number(initialPost.userId),
                     date: new Date().toISOString(),
                     reactions: reactionsList
                 }
