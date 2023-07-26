@@ -36,6 +36,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
             query: () => '/posts',
             transformResponse: transformResponseData,
             providesTags: (result, error, arg) => [
+                // console.log(result),
                 { type: 'Post', id: "LIST" },
                 ...result.ids.map(id => ({ type: 'Post', id }))
             ]

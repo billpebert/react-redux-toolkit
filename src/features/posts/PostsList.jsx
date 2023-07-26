@@ -6,7 +6,7 @@ import { useGetPostsQuery } from "./postSlice"
 
 const PostsList = () => {
 
-	const {isLoading, isSuccess, isError, error} = useGetPostsQuery()
+	const { isLoading, isSuccess, isError, error } = useGetPostsQuery()
 	const orderedPostIds = useSelector(selectPostIds)
 	let content
 
@@ -15,7 +15,7 @@ const PostsList = () => {
 	} else if (isSuccess) {
 		// const orderedPosts = posts.slice().sort((a, b) => b.date.localeCompare(a.date))
 		// content = orderedPosts.map((post) => <PostsExcerpt key={post.id} post={post} />)
-
+		console.log(orderedPostIds)
 		content = orderedPostIds.map(postId => <PostsExcerpt key={postId} postId={postId} />)
 	} else if (isError) {
 		content = <p>error! {postsError}</p>
